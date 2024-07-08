@@ -77,7 +77,9 @@ def _generate_word_doc(sdata):
 async def download(request:Request):
     sdata = _get_report_subset()
     outfile = _generate_word_doc(sdata)
-    return FileResponse(outfile)
+    return FileResponse(outfile, 
+                        media_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                        filename='salw_report.docx')
 
 @app.get("/datatable")
 async def get_data_table(request:Request):
