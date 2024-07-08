@@ -1,0 +1,20 @@
+{% if msg is defined %}
+    {% if msg == 'All reports OK!' %}
+        {% set border = 'border-green-300' %}
+    {% else %}
+        {% set border = 'border-red-300' %}
+    {% endif %}
+{% else %}
+    {% set border = 'border-gray-300' %}
+{% endif %}
+<div class='py-2' hx-target="this" hx-swap="outerHTML">
+    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Additional Reports:</label>
+    <textarea id="message" name='additionalReports' rows="4" hx-post='/reportoptions/additionalreports' class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border {{ border }} focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="List additional reports (comma separated)...">{{ additional_reports }}</textarea>
+    {% if msg is defined %}
+        {% if msg == 'All reports OK!' %}
+            <p class="text-sm text-green-600">{{ msg }}</p> 
+        {% else %}
+            <p class="text-sm text-red-600">{{ msg }}</p>
+        {% endif %}
+    {% endif %}
+</div>

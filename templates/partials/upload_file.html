@@ -1,0 +1,22 @@
+<div class="py-2">
+    <form id="upload_file" 
+        hx-encoding='multipart/form-data' 
+        hx-post='/uploadfile' 
+        hx-trigger="change from:#file"
+        hx-indicator="#spinner">
+            <div class="file-input">
+                <label for="file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                        {% include './svg/upload_cloud.svg' %} 
+                        <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span></p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">.xlsx</p>
+                    </div>
+                    <input id='file' name='file' type="file" class="sr-only">
+                    <div id='spinner' class="htmx-indicator" >
+                        {% include './svg/spinner.svg' %}
+                        <span class="sr-only">Loading...</span>
+                    </div> 
+                </label>
+            </div>
+    </form>
+</div>

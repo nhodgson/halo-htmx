@@ -1,0 +1,32 @@
+<div class="relative shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr class="flex w-full mb-4">
+                <th scope="col" class="w-1/4 px-6 py-3">
+                    Report ID
+                </th>
+                <th scope="col" class="w-1/4 px-6 py-3">
+                    Created At
+                </th>
+                <th scope="col" class="w-1/2 px-6 py-3">
+                    Report Headline
+                </th>
+            </tr>
+        </thead>
+        <tbody class="flex flex-col overflow-y-scroll w-full" style="height: 50vh;">
+            {% for row in rows %}
+            <tr class="flex bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="flex px-6 py-4 w-1/4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{ row.report_id }}
+                </th>
+                <td class="flex px-6 py-4 w-1/4">
+                    {{ row._created_at }}
+                </td>
+                <td class="flex px-6 py-4 w-1/2">
+                    {{ row.report_headline }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
