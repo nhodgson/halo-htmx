@@ -126,6 +126,7 @@ async def create_upload_file(file: UploadFile, request:Request):
 
 @app.get("/")
 async def main(request: Request):
+    REPORT_DATA = initialise_report_data()
     t = REPORT_DATA['start']
     start = '{}/{}/{}'.format(t.month,t.day,t.year) 
     return templates.TemplateResponse("index.html", {'start': start, 'request': request})
