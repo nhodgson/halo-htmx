@@ -17,8 +17,9 @@
             {% include './partials/download.html' %}
         </div>
         <div hx-get="/datatable" hx-trigger="file-changed from:body" hx-indicator="#spinner" class="col-span-2">
-            <div class="text-center">
-                <img alt='loading' id="spinner" class="htmx-indicator" src='/static/spinner.svg' />
+            <div role="status" id="spinner" class="htmx-indicator py-2">
+                {% include './svg/spinner.svg' %}
+                <span class="sr-only">Loading...</span>
             </div>
         <div>
     </div>
