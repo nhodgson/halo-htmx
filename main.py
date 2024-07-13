@@ -19,7 +19,7 @@ CWD = os.path.dirname(os.path.realpath(__file__))
 def initialise_report_data():
 
     today = datetime.datetime.today()
-    d = {'data': pd.DataFrame(),
+    d = {'data': None,
         'start': today,
         'end': today - datetime.timedelta(7),
         'related_reports': [],
@@ -83,6 +83,9 @@ async def download(request:Request):
 @app.get("/datatable")
 async def get_data_table(request:Request):
 
+    if REPORT_DATA['data'] is None:
+        REPORT_DATA['data'], REPORT_DATA['related_reports'] = load_report_data(BytesIO(REPORT_DATA['raw_data']))
+
     sdata = _get_report_subset()   
     sdata['_created_at'] = sdata['_created_at'].astype(str)
     sdata = sdata.sort_values('report_id')
@@ -99,7 +102,7 @@ async def get_data_table(request:Request):
         
     return templates.TemplateResponse("./partials/report_table.html", {'rows': records,
                                                                        'n_reports': n_reports, 
-                                                                       'start': end, 
+                                                                       'start': start, 
                                                                        'end': end,
                                                                        'request': request})
 
@@ -129,8 +132,7 @@ async def date(start: Annotated[str, Form()], end: Annotated[str, Form()], reque
 
 @app.post("/uploadfile")
 async def create_upload_file(file: UploadFile, request:Request):
-    data = await file.read()
-    REPORT_DATA['data'], REPORT_DATA['related_reports'] = load_report_data(BytesIO(data))
+    REPORT_DATA['raw_data'] = await file.read()
     response = templates.TemplateResponse("./partials/file_uploaded.html", {'file': file.filename, 'request': request})
     response.headers['HX-Trigger'] = 'file-changed'
     return response
