@@ -2,19 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>FastAPI + HTMX Demo</title>
+    <title>SALW Report Generator</title>
     <link href="{{ url_for('static', path='/css/output.css') }}" rel="stylesheet"> 
     <script src="https://unpkg.com/htmx.org"></script>
 </head>
 <body>
     <header class="flex h-10 bg-gray-200">SALW Report Generator</header>
     <div class="grid grid-cols-3 gap-3 p-4">
-        <div id="fileuploadarea">
+        <div id="fileuploadarea" class="flex flex-col"> 
             {% include './partials/upload_file.html' %}            
             {% include './partials/datepicker.html' %}
             {% include './partials/download.html' %}
         </div>
-        <div hx-get="/datatable" hx-trigger="file-changed from:body"  class="col-span-2"></div>
+        <div hx-get="/datatable" hx-trigger="file-changed from:body" hx-indicator="#spinner" class="col-span-2">
+            <img alt='loading' id="spinner" class="htmx-indicator" src='/static/spinner.svg' />
+        <div>
     </div>
 </body>
 </html>

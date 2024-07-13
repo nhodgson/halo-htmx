@@ -51,7 +51,6 @@ def _get_report_subset():
         # remove reports already in the selected data
         additional_reports = [r for r in REPORT_DATA['additional_reports'] if r not in sdata.index.values]
         ar = REPORT_DATA['data'][REPORT_DATA['data']['report_id'].isin([additional_reports])]
-        print(ar)
         sdata = pd.concat([sdata, ar])
 
     return sdata
@@ -91,8 +90,18 @@ async def get_data_table(request:Request):
     
     if len(sdata) == 0:
         records = [{'report_id':'--', '_created_at':'--', 'report_headline':'--'}]
-
-    return templates.TemplateResponse("./partials/report_table.html", {'rows': records, 'request': request})
+        n_reports = 0
+    else:
+        n_reports = len(records)
+    
+    start = '{}/{}/{}'.format(REPORT_DATA['start'].day, REPORT_DATA['start'].month, REPORT_DATA['start'].year)
+    end = '{}/{}/{}'.format(REPORT_DATA['end'].day, REPORT_DATA['end'].month, REPORT_DATA['end'].year)
+        
+    return templates.TemplateResponse("./partials/report_table.html", {'rows': records,
+                                                                       'n_reports': n_reports, 
+                                                                       'start': end, 
+                                                                       'end': end,
+                                                                       'request': request})
 
 @app.post("/reportoptions/additionalreports")
 async def date(additionalReports: Annotated[str, Form()], request:Request):
