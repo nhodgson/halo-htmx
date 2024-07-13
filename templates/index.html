@@ -7,7 +7,9 @@
     <script src="https://unpkg.com/htmx.org"></script>
 </head>
 <body>
-    <header class="flex h-10 bg-gray-200">SALW Report Generator</header>
+    <header class="flex w-full h-16 mx-auto bg-gray-100">
+        <h1 class="self-center text-2xl px-6">SALW Report Generator</h1> 
+    </header>
     <div class="grid grid-cols-3 gap-3 p-4">
         <div id="fileuploadarea" class="flex flex-col"> 
             {% include './partials/upload_file.html' %}            
@@ -15,7 +17,9 @@
             {% include './partials/download.html' %}
         </div>
         <div hx-get="/datatable" hx-trigger="file-changed from:body" hx-indicator="#spinner" class="col-span-2">
-            <img alt='loading' id="spinner" class="htmx-indicator" src='/static/spinner.svg' />
+            <div class="text-center">
+                <img alt='loading' id="spinner" class="htmx-indicator" src='/static/spinner.svg' />
+            </div>
         <div>
     </div>
 </body>
