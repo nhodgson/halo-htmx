@@ -2,6 +2,9 @@ from io import BytesIO
 import os
 import datetime
 import subprocess
+import logging
+
+logging.basicConfig(format="{levelname}:{name}:{message}", style="{")
 
 from halo.salw_report import load_report_data, Report 
 
@@ -43,10 +46,16 @@ def to_datetime(d):
     return datetime.datetime(d[2], d[0], d[1])
 
 def _get_report_subset():
+    logging.info('Subset requested')
+    logging.info('Start date: {}'.format(REPORT_DATA['start']))
+    logging.info('End date: {}'.format(REPORT_DATA['end']))
+    
     sdata = REPORT_DATA['data'][(REPORT_DATA['data']['_created_at'] >= REPORT_DATA['start']) &
                                 (REPORT_DATA['data']['_created_at'] <= REPORT_DATA['end']) &
                                 (REPORT_DATA['data']['report_verified'] == 'Yes')]
     
+    logging.info('Number of reports found: {}'.format(len(sdata)))
+
     if len(REPORT_DATA['additional_reports']) > 0:
         # remove reports already in the selected data
         additional_reports = [r for r in REPORT_DATA['additional_reports'] if r not in sdata.index.values]
@@ -56,7 +65,9 @@ def _get_report_subset():
     return sdata
 
 def _generate_word_doc(sdata):
-        
+
+    logging.info('Generating .docx')
+
     sdata = sdata.reset_index()
     r = Report(sdata, REPORT_DATA['related_reports'])
     r.create_report()
@@ -84,6 +95,7 @@ async def download(request:Request):
 async def get_data_table(request:Request):
 
     if REPORT_DATA['data'] is None:
+        logging.info('Creating dataframe from raw bytes')
         REPORT_DATA['data'], REPORT_DATA['related_reports'] = load_report_data(BytesIO(REPORT_DATA['raw_data']))
 
     sdata = _get_report_subset()   
