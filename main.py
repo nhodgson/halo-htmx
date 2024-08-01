@@ -1,10 +1,15 @@
 from io import BytesIO
-import os
+import os, sys
 import datetime
 import subprocess
 import logging
 
-logging.basicConfig(format="{levelname}:{name}:{message}", style="{")
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+stream_handler = logging.StreamHandler(sys.stdout)
+log_formatter = logging.basicConfig(format="{levelname}:{name}:{message}", style="{")
+stream_handler.setFormatter(log_formatter)
+logger.addHandler(stream_handler)
 
 from halo.salw_report import load_report_data, Report 
 
@@ -46,15 +51,15 @@ def to_datetime(d):
     return datetime.datetime(d[2], d[0], d[1])
 
 def _get_report_subset():
-    logging.info('Subset requested')
-    logging.info('Start date: {}'.format(REPORT_DATA['start']))
-    logging.info('End date: {}'.format(REPORT_DATA['end']))
+    logger.info('Subset requested')
+    logger.info('Start date: {}'.format(REPORT_DATA['start']))
+    logger.info('End date: {}'.format(REPORT_DATA['end']))
     
     sdata = REPORT_DATA['data'][(REPORT_DATA['data']['_created_at'] >= REPORT_DATA['start']) &
                                 (REPORT_DATA['data']['_created_at'] <= REPORT_DATA['end']) &
                                 (REPORT_DATA['data']['report_verified'] == 'Yes')]
     
-    logging.info('Number of reports found: {}'.format(len(sdata)))
+    logger.info('Number of reports found: {}'.format(len(sdata)))
 
     if len(REPORT_DATA['additional_reports']) > 0:
         # remove reports already in the selected data
@@ -66,7 +71,7 @@ def _get_report_subset():
 
 def _generate_word_doc(sdata):
 
-    logging.info('Generating .docx')
+    logger.info('Generating .docx')
 
     sdata = sdata.reset_index()
     r = Report(sdata, REPORT_DATA['related_reports'])
@@ -95,7 +100,7 @@ async def download(request:Request):
 async def get_data_table(request:Request):
 
     if REPORT_DATA['data'] is None:
-        logging.info('Creating dataframe from raw bytes')
+        logger.info('Creating dataframe from raw bytes')
         REPORT_DATA['data'], REPORT_DATA['related_reports'] = load_report_data(BytesIO(REPORT_DATA['raw_data']))
 
     sdata = _get_report_subset()   
