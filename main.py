@@ -28,8 +28,8 @@ def initialise_report_data():
 
     today = datetime.datetime.today()
     d = {'data': None,
-        'start': today,
-        'end': today - datetime.timedelta(7),
+        'start': today - datetime.timedelta(7),
+        'end': today,
         'related_reports': [],
         'additional_reports': []}
     
