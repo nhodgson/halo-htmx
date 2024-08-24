@@ -2,7 +2,8 @@
     <form id="upload_file" 
         hx-encoding='multipart/form-data' 
         hx-post='/uploadfile' 
-        hx-trigger="change from:#file">
+        hx-trigger="change from:#file"
+        hx-history="false">
             <div class="file-input">
                 <label for="file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                     <div class="flex flex-col items-center justify-center pt-5 pb-6">
@@ -10,7 +11,7 @@
                         <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span></p>
                         <p class="text-xs text-gray-500 dark:text-gray-400">.xlsx</p>
                     </div>
-                    <input id='file' name='file' type="file" class="sr-only">
+                    <input id='uploadFile' name='file' type="file" class="sr-only">
                 </label>
             </div>
             <label id='progress-label' for="progress" class="text-sm text-gray-900 dark:text-white">Ready to upload:</label>

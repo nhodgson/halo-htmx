@@ -23,19 +23,20 @@ from fastapi.responses import FileResponse
 import pandas as pd
 
 CWD = os.path.dirname(os.path.realpath(__file__))
+
+REPORT_DATA = {}
                       
 def initialise_report_data():
 
     today = datetime.datetime.today()
-    d = {'data': None,
-        'start': today - datetime.timedelta(7),
-        'end': today,
-        'related_reports': [],
-        'additional_reports': []}
+    d = {'raw_data': None,
+         'data': None,
+         'start': today - datetime.timedelta(7),
+         'end': today,
+         'related_reports': [],
+         'additional_reports': []}
     
     return d
-
-REPORT_DATA = initialise_report_data()
 
 app = FastAPI()
 app.mount(
