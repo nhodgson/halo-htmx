@@ -23,8 +23,6 @@ from fastapi.responses import FileResponse
 import pandas as pd
 
 CWD = os.path.dirname(os.path.realpath(__file__))
-
-REPORT_DATA = {}
                       
 def initialise_report_data():
 
@@ -37,6 +35,8 @@ def initialise_report_data():
          'additional_reports': []}
     
     return d
+
+REPORT_DATA = initialise_report_data()
 
 app = FastAPI()
 app.mount(
