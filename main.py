@@ -150,9 +150,13 @@ async def date(start: Annotated[str, Form()], end: Annotated[str, Form()], reque
 
 @app.post("/uploadfile")
 async def create_upload_file(file: UploadFile, request:Request):
+
     REPORT_DATA['raw_data'] = await file.read()
     response = templates.TemplateResponse("./partials/file_uploaded.html", {'file': file.filename, 'request': request})
     response.headers['HX-Trigger'] = 'file-changed'
+    response.headers["Cache-Control"] = "no-store"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
     return response
 
 @app.get("/")
